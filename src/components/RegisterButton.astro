@@ -1,0 +1,22 @@
+---
+/**
+ * 注册按钮（affiliate 链接专用）。
+ * 自动加 rel="sponsored nofollow noopener"，符合搜索引擎对付费链接的规范。
+ */
+interface Props {
+  href: string;
+  label?: string;
+  block?: boolean;
+}
+
+const { href, label = '官网注册', block = false } = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={['btn', 'btn-register', { 'btn-block': block }]}
+  rel="sponsored nofollow noopener"
+  target="_blank"
+>
+  {label} →
+</a>

@@ -1,0 +1,126 @@
+---
+/**
+ * 机场品牌库 —— 16 家机场品牌统一展示页（机场导航）。
+ * 数据全部来自 src/data/airports.ts；每个品牌卡片含
+ * 线路/协议/价格/解锁/优惠码/注册按钮/测速图（折叠懒加载）/评测链接。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CouponBox from '../../components/CouponBox.astro';
+import RegisterButton from '../../components/RegisterButton.astro';
+import { AIRPORTS, overallScore } from '../../data/airports';
+import { BOARDS } from '../../data/boards';
+import { SITE } from '../../data/site';
+
+const updated = '2026年8月';
+
+const title = '机场品牌库：16 家机场大全与导航（2026 持续更新）';
+const description =
+  '2026 最新机场导航与品牌库：收录 16 家机场品牌的线路类型、协议、套餐价格、优惠码、AI 与流媒体解锁能力和真实测速数据，一页对比选出适合你的机场。';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: title,
+    description,
+    itemListElement: AIRPORTS.map((a, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: a.name,
+      url: `${SITE.url}/reviews/${a.id}/`,
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首页', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: '机场品牌库', item: `${SITE.url}/brands/` },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={jsonLd}
+  keywords={['机场品牌库', '机场导航', '2026 最新机场导航', '机场大全', '机场推荐', '机场评测', '机场优惠码']}
+>
+  <div class="container layout-single">
+    <div class="page-head">
+      <nav class="breadcrumb" aria-label="面包屑"><a href="/">首页</a> › 机场品牌库</nav>
+      <h1>机场品牌库：16 家机场大全与导航</h1>
+      <p>
+        本页收录 HaiwaiLab 实测过的 16 家机场品牌（更新于 {updated}）。每个品牌均附真实测速图、线路与协议信息、
+        当前优惠码和详细评测入口。不知道怎么选？先看
+        <a href="/reviews/best/">机场推荐总榜</a>，或按需求进入
+        <a href="/reviews/best/chatgpt/">ChatGPT 榜</a>、<a href="/reviews/best/streaming/">流媒体榜</a>、
+        <a href="/reviews/best/cheap/">性价比榜</a>、<a href="/reviews/best/iepl/">专线榜</a>。
+      </p>
+    </div>
+
+    <nav class="board-nav" aria-label="榜单导航">
+      {Object.values(BOARDS).map((b) => <a href={b.path}>{b.short}</a>)}
+      <a href="/deals/">优惠码</a>
+    </nav>
+
+    <div class="brand-grid">
+      {
+        AIRPORTS.map((a) => (
+          <div class="card brand-card">
+            <div class="bc-head">
+              <h2>{a.name}</h2>
+              <span class="bc-score">{overallScore(a)} / 10</span>
+            </div>
+            <p class="bc-tagline">{a.tagline}</p>
+            <dl class="bc-meta">
+              <dt>起步价</dt>
+              <dd>
+                <span class="bc-price">{a.priceFrom}</span>（{a.trafficFrom}）
+              </dd>
+              <dt>线路</dt>
+              <dd>{a.line}</dd>
+              <dt>协议</dt>
+              <dd>{a.protocols.join(' / ')}</dd>
+              <dt>地区</dt>
+              <dd>{a.regions.join('、')}</dd>
+              <dt>AI 工具</dt>
+              <dd>{a.aiUnlock}</dd>
+              <dt>流媒体</dt>
+              <dd>{a.streaming}</dd>
+            </dl>
+            {a.coupon && <CouponBox coupon={a.coupon} note={a.couponNote} />}
+            <details class="bc-speed">
+              <summary>查看 {a.name} 真实测速图</summary>
+              <img src={a.speedImage} alt={a.speedImageAlt} loading="lazy" decoding="async" />
+            </details>
+            <div class="bc-actions">
+              <RegisterButton href={a.url} label="官网注册" />
+              <a href={`/reviews/${a.id}/`}>完整评测 »</a>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <section class="prose">
+      <h2>怎么用这份机场品牌库</h2>
+      <p>
+        品牌库按<a href="/reviews/best/">总榜排名</a>排序。选择时建议按「使用场景 → 预算 → 线路类型」三步走：
+      </p>
+      <ul>
+        <li><strong>主力用 ChatGPT/Claude</strong>：优先选标注「AI 全解锁」的品牌，见 <a href="/reviews/best/chatgpt/">ChatGPT 机场榜</a></li>
+        <li><strong>主力看 Netflix/Disney+</strong>：优先选流媒体全解锁品牌，见 <a href="/reviews/best/streaming/">流媒体解锁榜</a></li>
+        <li><strong>预算 15 元以内</strong>：见 <a href="/reviews/best/cheap/">便宜机场榜</a>，注意年付折算价与月付价的区别</li>
+        <li><strong>晚高峰卡顿敏感</strong>：选 IEPL 专线品牌，见 <a href="/reviews/best/iepl/">专线机场榜</a>，原理见 <a href="/guide/what-is-jichang/">机场选购指南</a></li>
+      </ul>
+      <p>
+        测速数据基于珠海联通家宽 32 线程并发测试（多数品牌为 5Gbps 环境，光速云/宇宙云为 9Gbps 环境测试，具体见各评测页标注），
+        原始数据未做修改；不同测试环境的绝对数值不可直接横向对比。解锁能力标注「品牌方宣称」的项目为
+        Vendor Data，我们会在后续深度评测中逐项验证。新手建议先读
+        <a href="/guide/getting-started/">科学上网入门指南</a>，再回来对号入座。
+      </p>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://haiwailab.com/sitemap-index.xml

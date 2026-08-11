@@ -1,0 +1,115 @@
+---
+/**
+ * 评测中心首页：榜单入口 + 全部品牌评测 + 对比评测。
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { BOARDS } from '../../data/boards';
+
+/** 榜单分两组展示：按使用场景 / 按客户端与套餐形态 */
+const SCENE_BOARDS = ['best', 'chatgpt', 'streaming', 'cheap', 'iepl', 'stable'] as const;
+const CLIENT_BOARDS = ['clash', 'shadowrocket', 'v2rayn', 'flexible'] as const;
+const BOARD_EMOJI: Record<string, string> = {
+  best: '🏆',
+  chatgpt: '🤖',
+  streaming: '🎬',
+  cheap: '💰',
+  iepl: '🚄',
+  stable: '🛡️',
+  clash: '⚡',
+  shadowrocket: '🚀',
+  v2rayn: '🖥️',
+  flexible: '♾️',
+};
+
+const entries = await getCollection('reviews', ({ data }) => !data.draft);
+
+const brandReviews = entries
+  .filter((e) => e.data.template === 'review')
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const vsReviews = entries
+  .filter((e) => e.data.template === 'vs')
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout
+  title="机场评测中心"
+  description="HaiwaiLab 长期实测 20+ 家机场：综合榜单、场景榜单、单品牌深度评测与对比评测，持续更新。"
+>
+  <div class="container layout-single">
+    <div class="page-head">
+      <nav class="breadcrumb" aria-label="面包屑"><a href="/">首页</a> › 机场评测</nav>
+      <h1>机场评测中心</h1>
+      <p>
+        我们长期付费实测多家机场：白天/晚高峰测速、流媒体与 AI 工具解锁、稳定性追踪。所有榜单持续更新。
+      </p>
+    </div>
+
+    <div class="section-head"><h2>📊 按需求选：场景榜单</h2></div>
+    <div class="scenario-grid">
+      {
+        SCENE_BOARDS.map((id) => (
+          <a href={BOARDS[id].path} class="card scenario-card">
+            <span class="scenario-emoji">{BOARD_EMOJI[id] ?? '📊'}</span>
+            <strong>{BOARDS[id].title}</strong>
+            <span>{BOARDS[id].blurb}</span>
+          </a>
+        ))
+      }
+      <a href="/deals/" class="card scenario-card">
+        <span class="scenario-emoji">🎁</span>
+        <strong>机场优惠码汇总</strong>
+        <span>当前可用的注册优惠码与促销活动。</span>
+      </a>
+    </div>
+
+    <div class="section-head"><h2>💻 按客户端选：已装好软件只差订阅</h2></div>
+    <div class="scenario-grid">
+      {
+        CLIENT_BOARDS.map((id) => (
+          <a href={BOARDS[id].path} class="card scenario-card">
+            <span class="scenario-emoji">{BOARD_EMOJI[id] ?? '📊'}</span>
+            <strong>{BOARDS[id].title}</strong>
+            <span>{BOARDS[id].blurb}</span>
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="section-head"><h2>🔍 品牌深度评测</h2></div>
+    <div class="article-list">
+      {
+        brandReviews.map((e) => (
+          <ArticleCard
+            href={`/reviews/${e.id}/`}
+            title={e.data.title}
+            description={e.data.description}
+            date={e.data.updatedDate ?? e.data.pubDate}
+          />
+        ))
+      }
+    </div>
+
+    {
+      vsReviews.length > 0 && (
+        <>
+          <div class="section-head">
+            <h2>⚖️ 对比评测</h2>
+          </div>
+          <div class="article-list">
+            {vsReviews.map((e) => (
+              <ArticleCard
+                href={`/reviews/${e.id}/`}
+                title={e.data.title}
+                description={e.data.description}
+                date={e.data.updatedDate ?? e.data.pubDate}
+              />
+            ))}
+          </div>
+        </>
+      )
+    }
+  </div>
+</BaseLayout>

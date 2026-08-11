@@ -1,0 +1,31 @@
+---
+/** 优惠码展示框（带一键复制） */
+interface Props {
+  coupon: string;
+  note?: string;
+}
+
+const { coupon, note } = Astro.props;
+---
+
+<div class="coupon-box">
+  <span>🎁 优惠码：</span>
+  <code>{coupon}</code>
+  <button type="button" data-coupon={coupon}>复制</button>
+  {note && <span>（{note}）</span>}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.coupon-box button[data-coupon]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.coupon ?? '');
+        const original = btn.textContent;
+        btn.textContent = '已复制 ✓';
+        setTimeout(() => (btn.textContent = original), 1600);
+      } catch {
+        /* 剪贴板不可用时静默失败 */
+      }
+    });
+  });
+</script>

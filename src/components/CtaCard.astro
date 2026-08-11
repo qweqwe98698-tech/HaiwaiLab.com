@@ -1,0 +1,25 @@
+---
+/**
+ * 文末 CTA 卡片 —— 内链铁律的落地组件。
+ * 根据文章 frontmatter 的 `cta` 字段自动指向对应榜单。
+ */
+import { boardById } from '../data/boards';
+
+interface Props {
+  cta: string;
+  /** 卡片语气：tofu = 顺带提及；mofu = 专业建议 */
+  tone?: 'tofu' | 'mofu';
+}
+
+const { cta, tone = 'tofu' } = Astro.props;
+const board = boardById(cta);
+
+const kicker = tone === 'mofu' ? '实测推荐' : '下一步';
+---
+
+<aside class="cta-card">
+  <div class="cta-kicker">{kicker}</div>
+  <h3>{board.title}（{new Date().getFullYear()} 持续更新）</h3>
+  <p>{board.blurb}</p>
+  <a href={board.path} class="btn btn-secondary">查看{board.short} →</a>
+</aside>

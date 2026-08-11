@@ -1,0 +1,27 @@
+---
+/** 文章列表卡片 */
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  date: Date;
+  sectionName?: string;
+}
+
+const { href, title, description, date, sectionName } = Astro.props;
+
+const dateStr = date.toLocaleDateString('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<a href={href} class="card article-card">
+  <h3>{title}</h3>
+  <p>{description}</p>
+  <div class="article-meta">
+    {sectionName && <span>{sectionName} · </span>}
+    {dateStr}
+  </div>
+</a>

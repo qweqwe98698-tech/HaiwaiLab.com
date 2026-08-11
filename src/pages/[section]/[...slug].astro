@@ -1,0 +1,26 @@
+---
+/**
+ * 文章详情页：五个文章栏目共用，渲染 Markdown 正文。
+ */
+import { getCollection, render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { SECTION_IDS } from '../../data/site';
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const section of SECTION_IDS) {
+    const entries = await getCollection(section as any, ({ data }: any) => !data.draft);
+    for (const entry of entries) {
+      paths.push({ params: { section, slug: entry.id }, props: { entry, section } });
+    }
+  }
+  return paths;
+}
+
+const { entry, section } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<ArticleLayout entry={entry} section={section}>
+  <Content />
+</ArticleLayout>

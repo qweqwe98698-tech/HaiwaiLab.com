@@ -1,0 +1,51 @@
+---
+/**
+ * 栏目页：ai / apps / accounts / network / guide 五个文章栏目共用。
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import SidebarTop3 from '../../components/SidebarTop3.astro';
+import { SECTIONS, sectionById } from '../../data/site';
+
+export async function getStaticPaths() {
+  return SECTIONS.map((s) => ({ params: { section: s.id } }));
+}
+
+const { section } = Astro.params;
+const info = sectionById(section!);
+
+const entries = (await getCollection(section as any, ({ data }: any) => !data.draft)).sort(
+  (a: any, b: any) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout title={info.name} description={info.description}>
+  <div class="container layout-sidebar">
+    <div>
+      <div class="page-head">
+        <nav class="breadcrumb" aria-label="面包屑">
+          <a href="/">首页</a> › {info.name}
+        </nav>
+        <h1>{info.name}</h1>
+        <p>{info.description}</p>
+      </div>
+      <div class="article-list">
+        {
+          entries.map((e: any) => (
+            <ArticleCard
+              href={`/${section}/${e.id}/`}
+              title={e.data.title}
+              description={e.data.description}
+              date={e.data.pubDate}
+            />
+          ))
+        }
+      </div>
+      {entries.length === 0 && <p>该栏目内容筹备中，敬请期待。</p>}
+    </div>
+    <aside class="sidebar">
+      <SidebarTop3 />
+    </aside>
+  </div>
+</BaseLayout>

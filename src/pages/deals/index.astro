@@ -1,0 +1,56 @@
+---
+/**
+ * 优惠码聚合页 —— 高转化捕获页（搜索「XX机场 优惠码」的用户临门一脚）。
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CouponBox from '../../components/CouponBox.astro';
+import RegisterButton from '../../components/RegisterButton.astro';
+import SidebarTop3 from '../../components/SidebarTop3.astro';
+import { AIRPORTS } from '../../data/airports';
+
+const withDeals = AIRPORTS.filter((a) => a.coupon);
+const updated = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long' });
+---
+
+<BaseLayout
+  title="机场优惠码汇总（每月更新）"
+  description="各大机场当前可用的注册优惠码与促销活动汇总，持续验证有效性，每月更新。"
+>
+  <div class="container layout-sidebar">
+    <div>
+      <div class="page-head">
+        <nav class="breadcrumb" aria-label="面包屑">
+          <a href="/">首页</a> › 优惠码
+        </nav>
+        <h1>机场优惠码汇总</h1>
+        <p>以下优惠码均经过人工验证，更新于 {updated}。失效请留言反馈。</p>
+      </div>
+
+      {
+        withDeals.map((a) => (
+          <div class="card airport-card">
+            <div class="airport-head">
+              <h3>{a.name}</h3>
+              <span class="airport-price">{a.priceFrom} 起</span>
+            </div>
+            <p class="airport-tagline">{a.tagline}</p>
+            <CouponBox coupon={a.coupon!} note={a.couponNote} />
+            <div class="airport-actions">
+              <RegisterButton href={a.url} label="去官网使用" />
+              <a class="review-link" href={`/reviews/${a.id}/`}>
+                查看评测 »
+              </a>
+            </div>
+          </div>
+        ))
+      }
+
+      <p>
+        不知道选哪家？先看 <a href="/reviews/best/">机场推荐总榜</a>，按需求对号入座。
+      </p>
+    </div>
+    <aside class="sidebar">
+      <SidebarTop3 />
+    </aside>
+  </div>
+</BaseLayout>

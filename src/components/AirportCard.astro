@@ -1,0 +1,32 @@
+---
+/** 榜单页机场排名卡片 */
+import type { Airport } from '../data/airports';
+import ScoreGrid from './ScoreGrid.astro';
+import CouponBox from './CouponBox.astro';
+import RegisterButton from './RegisterButton.astro';
+
+interface Props {
+  airport: Airport;
+  rank: number;
+}
+
+const { airport, rank } = Astro.props;
+---
+
+<div class="card airport-card">
+  <span class:list={['airport-rank', { 'rank-1': rank === 1 }]}>NO.{rank}</span>
+  <div class="airport-head">
+    <h3>{airport.name}</h3>
+    <span class="airport-price">{airport.priceFrom} 起</span>
+  </div>
+  <p class="airport-tagline">{airport.tagline}</p>
+  <div class="airport-tags">
+    {airport.highlights.map((h) => <span>{h}</span>)}
+  </div>
+  <ScoreGrid scores={airport.scores} />
+  {airport.coupon && <CouponBox coupon={airport.coupon} note={airport.couponNote} />}
+  <div class="airport-actions">
+    <RegisterButton href={airport.url} label={airport.couponNote ? `官网注册（${airport.couponNote}）` : '官网注册'} />
+    <a class="review-link" href={`/reviews/${airport.id}/`}>查看完整评测 »</a>
+  </div>
+</div>

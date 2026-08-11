@@ -1,0 +1,21 @@
+---
+import { SITE, NAV } from '../data/site';
+---
+
+<header class="site-header">
+  <div class="container">
+    <a href="/" class="logo">
+      <img src="/favicon.svg" alt={SITE.name} class="logo-mark" width="28" height="28" />
+      {SITE.name}
+    </a>
+    <nav class="site-nav" aria-label="主导航">
+      {
+        NAV.map((item) => (
+          <a href={item.href} class:list={[{ 'nav-highlight': item.highlight }]}>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>

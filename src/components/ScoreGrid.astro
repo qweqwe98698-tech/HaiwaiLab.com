@@ -1,0 +1,31 @@
+---
+/** 评分条组（速度/解锁/稳定/性价比，0–10 分） */
+interface Props {
+  scores: { speed: number; unlock: number; stability: number; value: number };
+}
+
+const { scores } = Astro.props;
+
+const items = [
+  { label: '速度', value: scores.speed },
+  { label: '解锁', value: scores.unlock },
+  { label: '稳定', value: scores.stability },
+  { label: '性价比', value: scores.value },
+];
+---
+
+<div class="score-grid">
+  {
+    items.map((item) => (
+      <div class="score-item">
+        <div class="score-label">
+          <span>{item.label}</span>
+          <b>{item.value.toFixed(1)}</b>
+        </div>
+        <div class="score-track">
+          <div class="score-fill" style={`width: ${item.value * 10}%`} />
+        </div>
+      </div>
+    ))
+  }
+</div>

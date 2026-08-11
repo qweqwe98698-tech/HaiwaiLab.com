@@ -1,0 +1,29 @@
+---
+/** 侧边栏机场推荐 TOP3 —— 全站固定转化位 */
+import { top3 } from '../data/airports';
+import RegisterButton from './RegisterButton.astro';
+
+const airports = top3();
+---
+
+<div class="card sidebar-card">
+  <h3>🏆 本月机场推荐 TOP3</h3>
+  {
+    airports.map((a) => (
+      <div class="sidebar-airport">
+        <div class="sa-name">
+          {a.name}
+          <span class="sa-price">{a.priceFrom} 起</span>
+        </div>
+        <p class="sa-tagline">{a.tagline}</p>
+        <div class="sa-actions">
+          <RegisterButton href={a.url} label="注册" />
+          <a href={`/reviews/${a.id}/`}>评测</a>
+        </div>
+      </div>
+    ))
+  }
+  <p style="margin: 14px 0 0; font-size: 13px;">
+    <a href="/reviews/best/">查看完整榜单 »</a>
+  </p>
+</div>

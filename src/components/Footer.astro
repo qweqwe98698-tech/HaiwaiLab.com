@@ -1,0 +1,51 @@
+---
+import { SITE, SECTIONS } from '../data/site';
+import { BOARDS } from '../data/boards';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-cols">
+      <div>
+        <h4>内容栏目</h4>
+        <ul>
+          {
+            SECTIONS.map((s) => (
+              <li>
+                <a href={`/${s.id}/`}>{s.name}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <h4>机场推荐</h4>
+        <ul>
+          {
+            Object.values(BOARDS).map((b) => (
+              <li>
+                <a href={b.path}>{b.title}</a>
+              </li>
+            ))
+          }
+          <li><a href="/deals/">机场优惠码</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>关于</h4>
+        <ul>
+          <li><a href="/guide/getting-started/">新手入门</a></li>
+          <li><a href="/reviews/">全部评测</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-note">
+      <p>
+        本站部分推荐链接为合作链接（affiliate），通过它们注册不会增加你的费用，但能支持本站持续产出实测内容。所有评测结论均基于长期真实测试，不受合作关系影响。
+      </p>
+      <p>© {year} {SITE.name} · 仅供学习交流，请遵守当地法律法规。</p>
+    </div>
+  </div>
+</footer>

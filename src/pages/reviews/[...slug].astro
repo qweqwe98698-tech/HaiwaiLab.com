@@ -1,0 +1,249 @@
+---
+/**
+ * 评测详情页：按 frontmatter template 切换三种模板。
+ * - ranking：榜单页（品牌卡片来自 airports.ts，正文为选购指南）
+ * - review：单品牌评测（信息表 + 评分卡 + 测速图 + 优惠码 + 注册按钮 + 正文 + FAQ）
+ * - vs：对比评测（正文 + 总榜 CTA）
+ *
+ * SEO/GEO：Article + BreadcrumbList + FAQPage（有 faq 时）+ ItemList（榜单）结构化数据。
+ */
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AirportCard from '../../components/AirportCard.astro';
+import ScoreGrid from '../../components/ScoreGrid.astro';
+import CouponBox from '../../components/CouponBox.astro';
+import RegisterButton from '../../components/RegisterButton.astro';
+import CtaCard from '../../components/CtaCard.astro';
+import SidebarTop3 from '../../components/SidebarTop3.astro';
+import { SITE } from '../../data/site';
+import { BOARDS, boardById } from '../../data/boards';
+import { byBoard, byId, overallScore } from '../../data/airports';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('reviews', ({ data }) => !data.draft);
+  return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, description, pubDate, updatedDate, template, faq, keywords } = entry.data;
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+
+/* ---- ranking 模板数据 ---- */
+const board = template === 'ranking' && entry.data.board ? boardById(entry.data.board) : null;
+const rankedAirports = template === 'ranking' && entry.data.board ? byBoard(entry.data.board) : [];
+
+/* ---- review 模板数据 ---- */
+const brand = template === 'review' && entry.data.brand ? byId(entry.data.brand) : null;
+const overall = brand ? overallScore(brand) : null;
+
+/* ---- JSON-LD ---- */
+const pageUrl = new URL(Astro.url.pathname, SITE.url).href;
+const jsonLd: object[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    datePublished: pubDate.toISOString(),
+    dateModified: (updatedDate ?? pubDate).toISOString(),
+    author: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+    publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+    mainEntityOfPage: pageUrl,
+    ...(brand ? { image: new URL(brand.speedImage, SITE.url).href } : {}),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首页', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: '机场评测', item: `${SITE.url}/reviews/` },
+      { '@type': 'ListItem', position: 3, name: title, item: pageUrl },
+    ],
+  },
+];
+if (template === 'ranking' && rankedAirports.length > 0) {
+  jsonLd.push({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: title,
+    itemListElement: rankedAirports.map((a, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: a.name,
+      url: `${SITE.url}/reviews/${a.id}/`,
+    })),
+  });
+}
+if (faq.length > 0) {
+  jsonLd.push({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((item: { q: string; a: string }) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  });
+}
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd} ogType="article" keywords={keywords}>
+  <div class="container layout-sidebar">
+    <article>
+      <nav class="breadcrumb" aria-label="面包屑">
+        <a href="/">首页</a> › <a href="/reviews/">机场评测</a> › {title}
+      </nav>
+      <header class="article-header">
+        <h1>{title}</h1>
+        <div class="article-meta">
+          发布于 {fmt(pubDate)}
+          {updatedDate && (
+            <>
+              {' · '}
+              <span class="updated">最后更新：{fmt(updatedDate)}</span>
+            </>
+          )}
+        </div>
+      </header>
+
+      {/* ============ ranking：榜单导航 + 排名卡片 ============ */}
+      {
+        template === 'ranking' && (
+          <>
+            <nav class="board-nav" aria-label="榜单导航">
+              {Object.entries(BOARDS).map(([id, b]) => (
+                <a href={b.path} class:list={[{ active: entry.data.board === id }]}>
+                  {b.short}
+                </a>
+              ))}
+              <a href="/brands/">品牌库</a>
+            </nav>
+            {rankedAirports.map((a, i) => (
+              <AirportCard airport={a} rank={i + 1} />
+            ))}
+          </>
+        )
+      }
+
+      {/* ============ review：品牌速览卡 ============ */}
+      {
+        template === 'review' && brand && (
+          <div class="card review-summary">
+            <div class="rs-head">
+              <h2>{brand.name} 综合评分</h2>
+              <span class="rs-score">{overall} / 10</span>
+            </div>
+            <p class="airport-tagline">{brand.tagline}</p>
+            <ScoreGrid scores={brand.scores} />
+            <table class="price-table">
+              <tbody>
+                <tr>
+                  <th>起步价</th>
+                  <td>
+                    {brand.priceFrom}（{brand.trafficFrom}）
+                  </td>
+                  <th>线路类型</th>
+                  <td>{brand.line}</td>
+                </tr>
+                <tr>
+                  <th>协议</th>
+                  <td>{brand.protocols.join(' / ')}</td>
+                  <th>测速样本</th>
+                  <td>{brand.nodeCount} 个节点</td>
+                </tr>
+                <tr>
+                  <th>AI 工具</th>
+                  <td>{brand.aiUnlock}</td>
+                  <th>流媒体</th>
+                  <td>{brand.streaming}</td>
+                </tr>
+                <tr>
+                  <th>客户端</th>
+                  <td colspan="3">{brand.clients}</td>
+                </tr>
+                <tr>
+                  <th>节点地区</th>
+                  <td colspan="3">{brand.regions.join('、')}</td>
+                </tr>
+              </tbody>
+            </table>
+            {brand.coupon && <CouponBox coupon={brand.coupon} note={brand.couponNote} />}
+            <RegisterButton
+              href={brand.url}
+              label={brand.couponNote ? `${brand.name} 官网注册（${brand.couponNote}）` : `${brand.name} 官网注册`}
+              block
+            />
+          </div>
+        )
+      }
+
+      {/* ============ review：真实测速图 ============ */}
+      {
+        template === 'review' && brand && (
+          <figure class="speed-figure">
+            <img
+              src={brand.speedImage}
+              alt={brand.speedImageAlt}
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>
+              {brand.name} 节点测速实测（测试环境：{brand.testEnv ?? '珠海联通 5Gbps / 32 线程并发'}；测速数据以图为准，实际体验受本地网络影响）
+            </figcaption>
+          </figure>
+        )
+      }
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      {/* ============ FAQ（GEO 模块，与 FAQPage 结构化数据同源） ============ */}
+      {
+        faq.length > 0 && (
+          <section class="faq-section">
+            <h2>常见问题</h2>
+            {faq.map((item: { q: string; a: string }) => (
+              <details class="faq-item">
+                <summary>{item.q}</summary>
+                <p>{item.a}</p>
+              </details>
+            ))}
+          </section>
+        )
+      }
+
+      {/* ============ 页尾转化位 ============ */}
+      {
+        template === 'review' && brand && (
+          <div class="card review-summary">
+            <div class="rs-head">
+              <h2>结论：{brand.name} 值得入手吗？</h2>
+            </div>
+            <p class="airport-tagline">{brand.tagline}</p>
+            <div class="airport-actions">
+              <RegisterButton
+                href={brand.url}
+                label={brand.couponNote ? `官网注册（${brand.couponNote}）` : '官网注册'}
+              />
+              <a class="review-link" href="/reviews/best/">
+                对比其他机场 »
+              </a>
+              <a class="review-link" href="/brands/">
+                查看品牌库 »
+              </a>
+            </div>
+          </div>
+        )
+      }
+      {template !== 'ranking' && template !== 'review' && <CtaCard cta="best" tone="mofu" />}
+    </article>
+
+    <aside class="sidebar">
+      <SidebarTop3 />
+    </aside>
+  </div>
+</BaseLayout>

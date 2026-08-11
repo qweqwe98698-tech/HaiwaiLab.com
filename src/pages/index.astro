@@ -1,0 +1,209 @@
+---
+/**
+ * 首页：核心词「机场推荐 / 机场排行榜 / 稳定机场推荐」集中承载页。
+ * 首屏榜单强导流 + 场景导航 + TOP3 推荐 + GEO 问答模块 + 最新文章。
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AirportCard from '../components/AirportCard.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { SITE, SECTIONS, SECTION_IDS } from '../data/site';
+import { top3 } from '../data/airports';
+
+/** 场景导航：用户按需求自助分流到对应转化路径 */
+const scenarios = [
+  {
+    emoji: '🏆',
+    title: '2026 机场排行榜',
+    desc: '16 家机场真实测速综合排名',
+    href: '/reviews/best/',
+  },
+  {
+    emoji: '🤖',
+    title: 'ChatGPT 机场推荐',
+    desc: 'AI 全解锁、稳定访问 ChatGPT/Claude',
+    href: '/reviews/best/chatgpt/',
+  },
+  {
+    emoji: '🎬',
+    title: '流媒体解锁机场',
+    desc: 'Netflix/Disney+ 高清不降速',
+    href: '/reviews/best/streaming/',
+  },
+  {
+    emoji: '💰',
+    title: '便宜机场推荐',
+    desc: '7 元起，预算有限的稳定之选',
+    href: '/reviews/best/cheap/',
+  },
+  {
+    emoji: '🚄',
+    title: 'IEPL 专线机场',
+    desc: '内网专线，晚高峰不拥堵',
+    href: '/reviews/best/iepl/',
+  },
+  {
+    emoji: '📚',
+    title: '机场品牌库',
+    desc: '16 家品牌资料与测速图一页看全',
+    href: '/brands/',
+  },
+  {
+    emoji: '🎁',
+    title: '机场优惠码',
+    desc: '当前可用注册优惠汇总',
+    href: '/deals/',
+  },
+  {
+    emoji: '🧭',
+    title: '新手入门',
+    desc: '从零开始的科学上网指南',
+    href: '/guide/getting-started/',
+  },
+];
+
+/** 首页 GEO 问答：只回答最核心的决策问题（FAQPage 结构化数据同源） */
+const homeFaq = [
+  {
+    q: '2026 年机场应该怎么选？',
+    a: '按「使用场景 → 预算 → 线路类型」三步选择：主力用 ChatGPT 选 AI 解锁机场，主力看 Netflix 选流媒体解锁机场；预算 15 元以内看便宜机场榜；对晚高峰卡顿敏感优先选 IEPL 专线机场。新机场先月付试用 1-2 个月再考虑年付。',
+  },
+  {
+    q: '机场推荐榜单是如何排序的？',
+    a: '本站榜单基于真实测速数据（联通 5Gbps 环境 32 线程并发，覆盖香港/台湾/新加坡/日本/美国等地区的延迟与速度）结合价格、线路类型与解锁能力综合排序。品牌方宣称但未验证的项目会标注「Vendor Data」，不虚构运营时间与节点数量。',
+  },
+  {
+    q: '便宜机场和专线机场有什么区别？',
+    a: '便宜机场（月付 7-15 元）多为普通中转线路，白天流畅但晚高峰可能拥堵；IEPL 专线机场走内网专线跨境、不经公网，晚高峰依旧稳定，价格通常更高。轻度使用选便宜机场即可，重度使用或办公建议专线。',
+  },
+  {
+    q: '新手第一次购买机场应该注意什么？',
+    a: '四个要点：先月付不年付；确认支持自己的客户端（Clash/Shadowrocket/v2rayN 或品牌自研客户端）；确认解锁能力覆盖自己的需求（ChatGPT/Netflix）；保存官网备用地址与客服渠道。警惕月付 5 元不限量这类明显超售的套餐。',
+  },
+  {
+    q: '机场买月付还是年付？',
+    a: '默认月付。年付折扣虽大，但机场行业存在跑路风险，只有运营 2 年以上、且你已连续稳定使用 2-3 个月的品牌才建议年付。本站品牌库中标注了各品牌的开业年份（仅收录品牌方提供的信息）。',
+  },
+  {
+    q: '机场和 VPN 有什么区别？',
+    a: '机场是订阅制代理服务：一次订阅获得几十个多地区节点，可自由切换，速度上限高、解锁能力普遍更强；商业 VPN 开箱即用但节点少、高峰限速常见。国内用户看重速度与流媒体/AI 解锁，机场是综合体验更好的主流选择。',
+  },
+];
+
+/** 聚合全部文章栏目，取最新 6 篇 */
+const sectionName = Object.fromEntries(SECTIONS.map((s) => [s.id, s.name]));
+const allArticles = (
+  await Promise.all(
+    SECTION_IDS.map(async (id) =>
+      (await getCollection(id as any, ({ data }: any) => !data.draft)).map((e: any) => ({
+        ...e,
+        section: id,
+      }))
+    )
+  )
+)
+  .flat()
+  .sort((a: any, b: any) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 6);
+
+const airports = top3();
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: SITE.url,
+    description: SITE.description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: homeFaq.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title={SITE.title}
+  description={SITE.description}
+  jsonLd={jsonLd}
+  keywords={[
+    '机场推荐',
+    '机场推荐 2026',
+    '2026 机场推荐',
+    '机场排行榜',
+    '稳定机场推荐',
+    '便宜机场推荐',
+    '专线机场推荐',
+    '高性价比机场推荐',
+    '科学上网机场推荐',
+  ]}
+>
+  <div class="hero">
+    <div class="container">
+      <h1>2026 机场推荐与稳定机场排行榜</h1>
+      <p>
+        16 家机场真实测速对比：稳定、便宜、专线、ChatGPT 与流媒体解锁机场推荐，附优惠码与新手避坑指南，持续更新。
+      </p>
+      <div class="hero-actions">
+        <a href="/reviews/best/" class="btn btn-register">查看 2026 机场排行榜</a>
+        <a href="/brands/" class="btn btn-secondary">机场品牌库</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container layout-single">
+    <div class="scenario-grid">
+      {
+        scenarios.map((s) => (
+          <a href={s.href} class="card scenario-card">
+            <span class="scenario-emoji">{s.emoji}</span>
+            <strong>{s.title}</strong>
+            <span>{s.desc}</span>
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="section-head">
+      <h2>🏆 本月机场推荐 TOP3</h2>
+      <a href="/reviews/best/">查看完整排行榜 »</a>
+    </div>
+    {airports.map((a, i) => <AirportCard airport={a} rank={i + 1} />)}
+
+    <section class="faq-section">
+      <h2>机场选购常见问题</h2>
+      {
+        homeFaq.map((item) => (
+          <details class="faq-item">
+            <summary>{item.q}</summary>
+            <p>{item.a}</p>
+          </details>
+        ))
+      }
+    </section>
+
+    <div class="section-head">
+      <h2>📝 最新文章</h2>
+      <a href="/guide/">全部教程 »</a>
+    </div>
+    <div class="article-list">
+      {
+        allArticles.map((e: any) => (
+          <ArticleCard
+            href={`/${e.section}/${e.id}/`}
+            title={e.data.title}
+            description={e.data.description}
+            date={e.data.pubDate}
+            sectionName={sectionName[e.section]}
+          />
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>
