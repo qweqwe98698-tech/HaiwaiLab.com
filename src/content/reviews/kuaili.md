@@ -1,6 +1,6 @@
 ---
 title: 快狸机场评测：双解锁 + 亚洲三线 200MB/s 实测（2026）
-description: 快狸机场怎么样？流媒体 + AI 双全解锁宣称，实测香港均速 216-319MB/s、新加坡 239-343MB/s、日本峰值 473MB/s（珠海联通 9Gbps 环境），VLESS 全节点 + FullCone UDP，25 元 150GB，附优惠码 kkk2222。
+description: 快狸机场怎么样、靠谱吗？流媒体 + AI 双全解锁宣称，63 节点实测（珠海联通 9Gbps 环境）：香港均速 216-319MB/s、新加坡 239-343MB/s、日本峰值 473MB/s，美国仅 US01 达 240MB/s 其余偏弱，VLESS 全节点 + FullCone UDP，25 元 150GB，含优惠码 kkk2222。
 pubDate: 2026-08-11
 updatedDate: 2026-08-11
 template: review

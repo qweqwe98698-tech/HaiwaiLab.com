@@ -1,6 +1,6 @@
 ---
 title: Clash Verge 节点全部超时怎么解决？2026 专项排查
-description: Clash Verge（Rev）节点全部超时、测速全红？本文针对 Clash 特有的原因排查：内核未启动、订阅格式、测速地址失效、DNS 配置、TUN 残留，附通用原因清单。
+description: Clash Verge（Rev）节点全部超时、测速全红，但网页其实能打开？本文教你先分辨「假超时」（测速地址被墙，换成 generate_204 地址即可）与真超时，再依次排查内核未启动、订阅格式与内核不兼容、DNS 污染、TUN 模式残留导致断网等 Clash 专属原因，并附通用原因清单。
 pubDate: 2026-08-11
 updatedDate: 2026-08-11
 tags: ['故障排查', 'Clash']

@@ -1,6 +1,6 @@
 ---
 title: 小火箭无法连接怎么办？Shadowrocket 节点超时排查（2026）
-description: Shadowrocket（小火箭）连不上、节点超时、显示已连接却上不了网？本文针对 iOS 特有原因排查：VPN 配置冲突、IPv6、蜂窝权限、订阅刷新，附省电与稳定性建议。
+description: Shadowrocket（小火箭）连不上、节点超时、显示已连接却上不了网？本文专讲 iOS 特有的故障点：系统里残留的旧 VPN 配置冲突、需要在设置-高级中关闭的 IPv6、蜂窝数据权限未开启、订阅未刷新等原因，并给出开启「按需连接」减少后台断线、固定低延迟节点省电的稳定性建议。
 pubDate: 2026-08-11
 updatedDate: 2026-08-11
 tags: ['故障排查', 'Shadowrocket', 'iOS']

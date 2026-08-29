@@ -1,6 +1,6 @@
 ---
 title: 光速云机场怎么样？六年老牌 IEPL 专线深度评测 2026
-description: 光速云机场怎么样、靠谱吗？六年老牌、IEPL 企业级内网专线、VLESS 全节点、流媒体与 AI 全解锁。实测香港 15 节点均速 505-550MB/s、峰值 619MB/s（珠海联通 9Gbps 环境），含优惠码 AMM。
+description: 光速云机场怎么样、靠谱吗？六年老牌、IEPL 企业级内网专线，50 节点均为 VLESS 协议 + FullCone UDP，流媒体与 AI 全解锁。实测（珠海联通 9Gbps 环境）香港 15 节点均速 505-550MB/s、峰值 619MB/s，新加坡多数节点 205-419MB/s，17 元 110GB，含优惠码 AMM。
 pubDate: 2026-08-11
 updatedDate: 2026-08-11
 template: review

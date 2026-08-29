@@ -1,6 +1,6 @@
 ---
 title: Shadowrocket 机场推荐 2026：iOS 小火箭低延迟实测榜
-description: 2026 Shadowrocket（小火箭）机场推荐：按 iOS 使用特点筛选，优先低延迟与稳定性，避免频繁切换耗电。附小火箭下载（需外区 Apple ID）与配置教程。
+description: 2026 Shadowrocket（小火箭）机场推荐：按 iOS 使用特点筛选，在珠海联通 5Gbps/32 线程同环境下实测香港区延迟，优先低延迟与连接稳定性、避免频繁重连耗电，而非追求速度峰值。附小火箭下载方法（需美区 Apple ID，约 2.99 美元）与详细配置、省电优化教程。
 pubDate: 2026-08-11
 updatedDate: 2026-08-11
 template: ranking

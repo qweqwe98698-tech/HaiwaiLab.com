@@ -1,6 +1,6 @@
 ---
 title: Shadowrocket 小火箭使用教程 2026：下载、导入订阅与省电设置
-description: Shadowrocket（小火箭）完整教程：如何用外区 Apple ID 下载、导入机场订阅、配置代理规则，以及连接失败、耗电快等常见问题的解决办法。
+description: Shadowrocket（小火箭）完整教程：小火箭已从国区 App Store 下架，需用外区 Apple ID（售价约 2.99 美元）购买下载，本文讲清导入机场订阅、全局路由三种模式配置，以及连接失败、关闭 IPv6、耗电快等常见问题的排查与省电优化办法。
 pubDate: 2026-08-11
 updatedDate: 2026-08-11
 tags: ['Shadowrocket', '小火箭', '客户端教程', 'iOS']

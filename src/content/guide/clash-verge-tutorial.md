@@ -1,6 +1,6 @@
 ---
 title: Clash Verge 使用教程 2026：安装、导入订阅与故障排查
-description: Clash Verge Rev 完整教程：Windows/macOS 安装、导入机场订阅、代理模式选择、TUN 模式设置，以及节点全部超时、订阅更新失败等常见故障的排查步骤。
+description: Clash Verge Rev 完整教程：Windows/macOS 安装、粘贴订阅链接导入机场、规则模式与全局模式怎么选、TUN 模式何时该开，以及节点全部超时、订阅更新失败等常见故障的排查步骤——系统时间偏差导致 TLS 握手失败是最容易被忽略的一个原因。
 pubDate: 2026-08-11
 updatedDate: 2026-08-11
 tags: ['Clash', '客户端教程', 'Clash Verge']

@@ -1,6 +1,6 @@
 ---
 title: ChatGPT 打不开怎么办？2026 按报错对症排查（附解决方案）
-description: ChatGPT 打不开、一直转圈、提示不在服务地区、频繁人机验证、对话中途断流？本文按报错类型逐一排查：网络层、IP 风控层、账号层，给出可执行的解决步骤。
+description: ChatGPT 打不开、一直转圈、提示 not available in your country、频繁出现 Just a moment 人机验证、对话中途断流？本文按网络层、IP 风控层、账号层三层依次排查，给出对应报错的可执行解决步骤，并附系统时间偏差、IPv6 泄漏、DNS 污染等容易被忽略的本地因素自查清单。
 pubDate: 2026-08-11
 updatedDate: 2026-08-11
 tags: ['ChatGPT', '故障排查']

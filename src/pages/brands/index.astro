@@ -15,7 +15,7 @@ const updated = '2026年8月';
 
 const title = '机场品牌库：16 家机场大全与导航（2026 持续更新）';
 const description =
-  '2026 最新机场导航与品牌库：收录 16 家机场品牌的线路类型、协议、套餐价格、优惠码、AI 与流媒体解锁能力和真实测速数据，一页对比选出适合你的机场。';
+  '2026 最新机场导航与品牌库：一页收录 16 家机场品牌的线路类型、协议支持、套餐价格、注册优惠码、AI 与流媒体解锁能力和真实测速数据，方便横向对比，快速选出适合你使用场景与预算的机场品牌。';
 
 const jsonLd = [
   {
@@ -93,7 +93,14 @@ const jsonLd = [
             {a.coupon && <CouponBox coupon={a.coupon} note={a.couponNote} />}
             <details class="bc-speed">
               <summary>查看 {a.name} 真实测速图</summary>
-              <img src={a.speedImage} alt={a.speedImageAlt} loading="lazy" decoding="async" />
+              <img
+                src={a.speedImage}
+                alt={a.speedImageAlt}
+                width={a.speedImageWidth}
+                height={a.speedImageHeight}
+                loading="lazy"
+                decoding="async"
+              />
             </details>
             <div class="bc-actions">
               <RegisterButton href={a.url} label="官网注册" />

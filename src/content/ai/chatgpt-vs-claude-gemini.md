@@ -1,6 +1,6 @@
 ---
 title: ChatGPT、Claude、Gemini 怎么选？2026 三大 AI 工具对比
-description: ChatGPT 和 Claude 哪个好？Gemini 值得用吗？2026 三大 AI 工具横向对比：能力侧重、价格、国内可用性与网络要求，按使用场景给出明确选择建议。
+description: ChatGPT 和 Claude 哪个好？Gemini 值得用吗？2026 三大 AI 工具横向对比：代码能力、长文档处理、图像生成与语音对话等功能差异，价格（ChatGPT Plus 和 Claude Pro 均为 20 美元/月）、国内可用性与网络风控要求，按开发者、全能助手等使用场景给出选择建议。
 pubDate: 2026-08-11
 updatedDate: 2026-08-11
 tags: ['ChatGPT', 'Claude', 'Gemini', 'AI 对比']

@@ -1,6 +1,6 @@
 ---
 title: v2rayN 机场推荐 2026：Windows 电脑党大流量实测榜
-description: 2026 v2rayN 机场推荐：按 Windows 电脑使用场景筛选，优先 150GB 大流量与高带宽表现，适合下载、开发与多设备共享。附 v2rayN 配置教程与常见问题。
+description: 2026 v2rayN 机场推荐：按 Windows 电脑使用场景筛选，只收录入门套餐月流量 150GB 以上且实测速度良好的机场，适合 4K 观影、大文件下载、开发拉取镜像与多设备共享；基于 Xray 内核兼容 VMess/VLESS/Trojan/Hysteria2 等主流协议，附配置教程与故障排查。
 pubDate: 2026-08-11
 updatedDate: 2026-08-11
 template: ranking

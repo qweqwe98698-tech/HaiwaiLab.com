@@ -1,6 +1,6 @@
 ---
 title: Clash 机场推荐 2026：支持订阅导入的实测机场榜
-description: 2026 Clash 机场推荐：筛选节点多、地区覆盖广、适合 Clash 分组切换与自动测速的机场，全部支持订阅导入，附 Clash Verge 配置教程与常见问题。
+description: 2026 Clash 机场推荐：从 16 家支持订阅导入的机场中，按测速样本节点数、地区覆盖广度与实测速度三项标准筛选（门槛为节点数 60 个以上或地区覆盖 10 个以上），适合 Clash 做地区分组切换、自动测速优选与规则分流，附 Clash Verge/Clash Meta 配置教程与订阅导入常见问题排查。
 pubDate: 2026-08-11
 updatedDate: 2026-08-11
 template: ranking
