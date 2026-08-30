@@ -1,5 +1,5 @@
 ---
-title: v2rayN 使用教程 2026：Windows 安装、导入订阅与故障排查
+title: v2rayN 使用教程 2026：安装订阅到故障排查（含 TLS 握手失败解法）
 description: v2rayN 完整教程：Windows 安装配置、导入机场订阅、系统代理与 TUN 模式设置，全面支持 VMess/VLESS/Trojan/SS/Hysteria2 协议，以及节点全部超时、测速正常却打不开网页等常见故障的逐步排查——系统时间偏差导致 TLS 握手失败是最高频却最容易被忽略的原因。
 pubDate: 2026-08-11
 updatedDate: 2026-08-11
