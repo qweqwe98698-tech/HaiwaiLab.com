@@ -1,0 +1,83 @@
+{
+  "version": "1.0.0",
+  "frozenDate": "2026-08-31",
+  "domain": "https://haiwailab.com",
+  "description": "生产 SEO 资产基准清单。此清单内的所有 URL 均为已上线并可能被收录的高价值资产，严禁无故删除、修改 slug、改变路径或覆盖。",
+  "totalCount": 60,
+  "indexableCount": 59,
+  "noindexCount": 1,
+  "assets": {
+    "homepage": [
+      "/"
+    ],
+    "sectionHubs": [
+      "/ai/",
+      "/apps/",
+      "/accounts/",
+      "/network/",
+      "/guide/",
+      "/reviews/",
+      "/brands/",
+      "/deals/"
+    ],
+    "rankings": [
+      "/reviews/best/",
+      "/reviews/best/chatgpt/",
+      "/reviews/best/streaming/",
+      "/reviews/best/cheap/",
+      "/reviews/best/iepl/",
+      "/reviews/best/stable/",
+      "/reviews/best/clash/",
+      "/reviews/best/shadowrocket/",
+      "/reviews/best/v2rayn/",
+      "/reviews/best/flexible/"
+    ],
+    "brandReviews": [
+      "/reviews/guangsuyun/",
+      "/reviews/feimaoyun/",
+      "/reviews/xingdaomeng/",
+      "/reviews/lingmao/",
+      "/reviews/ermaoyun/",
+      "/reviews/u1s1/",
+      "/reviews/guangnianti/",
+      "/reviews/yuzhouyun/",
+      "/reviews/yifanyun/",
+      "/reviews/sogoyun/",
+      "/reviews/quanqiuyun/",
+      "/reviews/weituyun/",
+      "/reviews/jilianyun/",
+      "/reviews/sujie/",
+      "/reviews/kuaili/",
+      "/reviews/kexinyun/"
+    ],
+    "articles": [
+      "/accounts/google-account/",
+      "/accounts/us-apple-id/",
+      "/ai/chatgpt-not-working/",
+      "/ai/chatgpt-plus/",
+      "/ai/chatgpt-register/",
+      "/ai/chatgpt-vs-claude-gemini/",
+      "/apps/netflix-in-china/",
+      "/apps/netflix-proxy-error/",
+      "/apps/youtube-premium/",
+      "/guide/clash-verge-tutorial/",
+      "/guide/free-nodes/",
+      "/guide/getting-started/",
+      "/guide/shadowrocket-tutorial/",
+      "/guide/v2rayn-tutorial/",
+      "/guide/what-is-jichang/",
+      "/network/clash-verge-timeout/",
+      "/network/connected-but-no-internet/",
+      "/network/evening-peak-slow/",
+      "/network/google-not-opening/",
+      "/network/nodes-all-timeout/",
+      "/network/only-my-device-fails/",
+      "/network/shadowrocket-connection-failed/",
+      "/network/subscription-update-failed/",
+      "/network/wifi-ok-cellular-fails/"
+    ],
+    "special": [
+      "/404.html"
+    ]
+  }
+}

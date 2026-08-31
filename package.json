@@ -7,7 +7,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "indexnow": "node scripts/submit-indexnow.mjs"
+    "indexnow": "node scripts/submit-indexnow.mjs",
+    "seo:check": "node scripts/seo-check.mjs",
+    "seo:verify": "node scripts/seo-verify-prod.mjs",
+    "predeploy": "npm run build && npm run seo:check"
   },
   "dependencies": {
     "@astrojs/mdx": "^7.0.5",

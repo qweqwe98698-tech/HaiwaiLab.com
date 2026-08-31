@@ -15,9 +15,11 @@ interface Props {
   ogType?: string;
   /** SEO 关键词（meta keywords，Bing 参考） */
   keywords?: string[];
+  /** 是否禁止搜索引擎索引（404页、测试页等） */
+  noindex?: boolean;
 }
 
-const { title, description, jsonLd, ogType = 'website', keywords = [] } = Astro.props;
+const { title, description, jsonLd, ogType = 'website', keywords = [], noindex = false } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
 const fullTitle = title === SITE.title ? title : `${title} - ${SITE.name}`;
@@ -32,6 +34,9 @@ const jsonLdList = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     {keywords.length > 0 && <meta name="keywords" content={keywords.join(',')} />}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {noindex && <meta name="googlebot" content="noindex, nofollow" />}
+    {noindex && <meta name="bingbot" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
