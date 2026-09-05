@@ -1,0 +1,61 @@
+name: Weekly SEO & GEO In-Depth Article Auto-Publish
+
+on:
+  # 每周一上午 09:00 (北京时间 UTC+8，即 UTC 01:00) 自动触发
+  schedule:
+    - cron: '0 1 * * 1'
+  # 支持在 GitHub 网页端手动一键运行与参数覆盖
+  workflow_dispatch:
+    inputs:
+      model:
+        description: '使用的 Gemini 模型 (如 gemini-2.5-flash / gemini-1.5-pro)'
+        required: false
+        default: 'gemini-2.5-flash'
+
+permissions:
+  contents: write
+
+jobs:
+  publish-article:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Weekly In-Depth SEO/GEO Article
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ github.event.inputs.model || 'gemini-2.5-flash' }}
+        run: node scripts/generate-weekly-article.mjs
+
+      - name: Build Project & Run Production SEO Gate Check
+        run: |
+          npm run build
+          npm run seo:check
+
+      - name: Commit and push new article to repository
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add src/content/ .seo-snapshot.json
+          if git diff --staged --quiet; then
+            echo "没有发现新文章或变动，跳过提交。"
+          else
+            git commit -m "feat(seo): weekly automated brand SEO/GEO in-depth article [skip ci]"
+            git push origin main
+          fi
+
+      - name: Submit URLs to Bing IndexNow
+        run: npm run indexnow

@@ -10,6 +10,7 @@
     "indexnow": "node scripts/submit-indexnow.mjs",
     "seo:check": "node scripts/seo-check.mjs",
     "seo:verify": "node scripts/seo-verify-prod.mjs",
+    "seo:generate": "node scripts/generate-weekly-article.mjs",
     "predeploy": "npm run build && npm run seo:check"
   },
   "dependencies": {
