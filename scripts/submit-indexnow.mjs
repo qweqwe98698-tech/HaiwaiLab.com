@@ -17,7 +17,7 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import { createHash } from 'node:crypto';
 
-const SITE_URL = 'https://haiwailab.com';
+const SITE_URL = 'https://haiwailab.lol';
 const INDEXNOW_KEY = '05cabdfce6ee54de7eff8d24d121ad41';
 const SITEMAP_INDEX = 'dist/sitemap-index.xml';
 const SNAPSHOT_PATH = '.indexnow-snapshot.json';

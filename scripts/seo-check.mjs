@@ -26,7 +26,7 @@ const distDir = path.join(rootDir, 'dist');
 const snapshotFile = path.join(rootDir, '.seo-snapshot.json');
 const frozenAssetsFile = path.join(rootDir, '.seo-frozen-assets.json');
 
-const SITE_URL = 'https://haiwailab.com';
+const SITE_URL = 'https://haiwailab.lol';
 const ALLOWED_NOINDEX_PAGES = new Set(['404.html']);
 
 const CORE_URLS = [
@@ -115,19 +115,18 @@ async function runCheck() {
   }
 
   const allHtmlFiles = getHtmlFiles(distDir);
-  const redirectFiles = new Set();
+  const jumpGatewayFiles = new Set();
 
   for (const file of allHtmlFiles) {
     const rel = path.relative(distDir, file).replace(/\\/g, '/');
-    const content = fs.readFileSync(file, 'utf8');
-    if (/http-equiv=["']refresh["']/i.test(content) && content.length < 500) {
-      redirectFiles.add(file);
+    if (rel.startsWith('go/') || rel.includes('/go/') || /http-equiv=["']refresh["']/i.test(fs.readFileSync(file, 'utf8'))) {
+      jumpGatewayFiles.add(file);
       ALLOWED_NOINDEX_PAGES.add(rel);
     }
   }
 
-  // Filter out redirect stub pages from normal content and canonical audit
-  const htmlFiles = allHtmlFiles.filter((f) => !redirectFiles.has(f));
+  // Filter out jump gateway stubs from normal content and canonical audit
+  const htmlFiles = allHtmlFiles.filter((f) => !jumpGatewayFiles.has(f));
   const totalHtmlCount = allHtmlFiles.length;
 
   if (totalHtmlCount === 0) {
@@ -171,7 +170,7 @@ async function runCheck() {
 
   // Build local route map
   const routeToLocalFile = new Map();
-  for (const file of htmlFiles) {
+  for (const file of allHtmlFiles) {
     const rel = path.relative(distDir, file).replace(/\\/g, '/');
     if (rel === 'index.html') {
       routeToLocalFile.set('/', rel);

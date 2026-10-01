@@ -1,10 +1,10 @@
 name: Weekly SEO & GEO In-Depth Article Auto-Publish
 
 on:
-  # 每周一上午 09:00 (北京时间 UTC+8，即 UTC 01:00) 自动触发
-  schedule:
-    - cron: '0 1 * * 1'
-  # 支持在 GitHub 网页端手动一键运行与参数覆盖
+  # 停用被动定时自动化跑批，杜绝因高频自动化 AI 批量文章引发的搜索引擎风控
+  # schedule:
+  #   - cron: '0 1 * * 1'
+  # 仅保留在 GitHub 网页端按需手动一键运行
   workflow_dispatch:
     inputs:
       model:
@@ -53,9 +53,10 @@ jobs:
           if git diff --staged --quiet; then
             echo "没有发现新文章或变动，跳过提交。"
           else
-            git commit -m "feat(seo): weekly automated brand SEO/GEO in-depth article [skip ci]"
+            git commit -m "feat(seo): manual brand SEO/GEO in-depth article [skip ci]"
             git push origin main
           fi
 
-      - name: Submit URLs to Bing IndexNow
-        run: npm run indexnow
+      # 已彻底停用向 Bing IndexNow 的主动强推，保护新站生命周期，转为常规 Sitemap 自然收录
+      # - name: Submit URLs to Bing IndexNow
+      #   run: npm run indexnow

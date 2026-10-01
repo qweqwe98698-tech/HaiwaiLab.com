@@ -23,7 +23,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const DOMAIN = 'https://haiwailab.com';
+const DOMAIN = 'https://haiwailab.lol';
 const distDir = 'dist';
 const sitemap0Path = path.join(distDir, 'sitemap-0.xml');
 

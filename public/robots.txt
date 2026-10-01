@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /go/
 
-Sitemap: https://haiwailab.com/sitemap-index.xml
+Sitemap: https://haiwailab.lol/sitemap-index.xml

@@ -8,7 +8,7 @@ export const SITE = {
   title: '2026 机场推荐：稳定、便宜、好用的机场排行榜 - HaiwaiLab 海外实验室',
   description:
     '2026 机场推荐与稳定机场排行榜：HaiwaiLab 实测 16 家机场速度与解锁能力，覆盖便宜机场、IEPL 专线机场、ChatGPT 专用机场、流媒体解锁机场，附真实测速图、注册优惠码与新手避坑指南，每月更新排名榜单，助你少走弯路选对机场。',
-  url: 'https://haiwailab.com',
+  url: 'https://haiwailab.lol',
 };
 
 /** TOFU/MOFU 文章栏目（内容集合与路由共用此定义） */
