@@ -1,0 +1,123 @@
+---
+/**
+ * 评测方法论与实测标准 (Methodology) —— 核心专业权威度 (Expertise) 支撑页
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../data/site';
+
+const title = '评测方法论与实测标准：HaiwaiLab 如何评测一家机场';
+const description =
+  'HaiwaiLab 机场评测方法论与设备规范：公开珠海联通 5Gbps/9Gbps 测试拓扑、32 线程并发压测流程、MiaoKo 抓包工具标准、流媒体与 AI 解锁验证逻辑以及丢包率计算方法。';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    headline: title,
+    description,
+    url: `${SITE.url}/methodology/`,
+    author: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首页', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: '评测方法论', item: `${SITE.url}/methodology/` },
+    ],
+  },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <div class="container layout-single">
+    <div class="page-head">
+      <nav class="breadcrumb" aria-label="面包屑"><a href="/">首页</a> › 评测方法论</nav>
+      <h1>评测方法论与测试标准规范</h1>
+      <p class="tagline">透明公开测试环境 · 统一技术标准 · 追求可复现的真实体验</p>
+    </div>
+
+    <article class="prose">
+      <h2>为什么需要公开评测方法论</h2>
+      <p>
+        在互联网上，很多测速截图由于没有标明测试环境（如家宽带宽、本地网络抖动、测试线程数、测试时间点），其数值往往缺乏横向可比性。甚至个别商贩利用单节点短时间公网突发带宽营造“全绿满速”的假象。
+      </p>
+      <p>
+        HaiwaiLab 坚信只有在统一、受控且公开的测试网络环境下进行多节点轮转压测，输出的测速数据与解锁结论才具备真正的参考价值。
+      </p>
+
+      <h2>核心测试环境与物理拓扑</h2>
+      <table class="price-table">
+        <thead>
+          <tr>
+            <th>测试维度</th>
+            <th>标准规格</th>
+            <th>技术说明与保障</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>物理入口网络</strong></td>
+            <td>珠海联通 5Gbps / 9Gbps 企业级对称光纤</td>
+            <td>超高带宽物理冗余，确保本地入口不是瓶颈，测出的数值真实反映机场线路吞吐上限。</td>
+          </tr>
+          <tr>
+            <td><strong>并发测试线程</strong></td>
+            <td>32 线程并发压测</td>
+            <td>模拟多设备、多长连接同时请求的真实高负载场景，考验中转机器的 CPU 与内存处理极限。</td>
+          </tr>
+          <tr>
+            <td><strong>压测软件内核</strong></td>
+            <td>MiaoKo 4.3.3 / MiaoSpeed 4.7.0 专业节点测试内核</td>
+            <td>行业公认的节点压测标准，原生支持 TLS 证书校验、FullCone NAT 穿透检测与流媒体分流识别。</td>
+          </tr>
+          <tr>
+            <td><strong>测试时段划分</strong></td>
+            <td>日常基准测试 + 晚高峰（20:00–22:30）重点抽检</td>
+            <td>国际骨干网出口拥堵多发生于晚高峰，重点验证专线架构（IEPL/IPLC）的抗干扰与防断流能力。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>关键评价指标的定义与算法</h2>
+
+      <h3>1. 下行均速（Average Download Speed）</h3>
+      <p>
+        节点在 32 线程并发下持续传输 10–15 秒的稳定吞吐均值（单位为 MB/s）。我们设定：
+      </p>
+      <ul>
+        <li><strong>> 300 MB/s（约 2.4Gbps+）</strong>：全站第一梯队（如光速云香港区 505–550MB/s），对千兆家宽完全溢出。</li>
+        <li><strong>100–300 MB/s</strong>：优秀主力水准，4K/8K 视频毫无缓冲卡顿。</li>
+        <li><strong>30–100 MB/s</strong>：合格可用水准，能满足日常全场景网页与视频需求。</li>
+        <li><strong>&lt; 20 MB/s</strong>：定义为短板节点，在评测正文中会明确标红提醒。</li>
+      </ul>
+
+      <h3>2. TLS 往返时延（TLS RTT Latency）</h3>
+      <p>
+        记录客户端与海外落地节点完成完整 TLS 握手所需的时间（毫秒）。香港节点通常要求控制在 20–35ms 内，日本/新加坡控制在 45–65ms 内，美国控制在 140–170ms 内。
+      </p>
+
+      <h3>3. 流媒体与 AI 解锁测试矩阵（RegionRestrictionCheck）</h3>
+      <p>
+        我们对每个常用地区节点运行专用解锁脚本，针对目标平台的鉴权 API 进行逐项探测：
+      </p>
+      <ul>
+        <li><strong>ChatGPT (OpenAI)</strong>：验证是否能绕过 Cloudflare 5 秒盾并成功响应 GPT-4o 对话，排除“Access Denied”与数据中心高风控 IP。</li>
+        <li><strong>Claude (Anthropic)</strong>：验证组织注册与 Web 会话连通性，排除地区不可用拦截。</li>
+        <li><strong>Netflix / Disney+</strong>：验证是否原生支持地区非自制片库版权播放（Native Unlock），排除仅能观看自制剧的 DNS 解锁降级状态。</li>
+      </ul>
+
+      <h2>数据标注规范与免责界限</h2>
+      <p>
+        我们严格遵循以下标注纪律：
+      </p>
+      <ul>
+        <li><strong>Measured Data（实测数据）</strong>：必须附带未经涂改、保留测试时间水印的原图，并注明具体测试环境。</li>
+        <li><strong>Vendor Data（官方宣称）</strong>：对于未纳入本轮批次实测的参数，一律加注「品牌资料显示」或「待核实」，绝不以个人实测语气下结论。</li>
+      </ul>
+      <p>
+        请知悉：任何单次测速切片仅反映截图时间点与该测试拓扑下的真实物理表现。用户的实际连接体验受本地宽带运营商、Wi-Fi 路由器信号及骨干网波动影响。
+      </p>
+    </article>
+  </div>
+</BaseLayout>

@@ -1,0 +1,82 @@
+---
+/**
+ * 关于我们 (About Us) —— E-E-A-T 核心信任页面
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../data/site';
+
+const title = '关于 HaiwaiLab：专业网络代理评测与跨境技术实验室';
+const description =
+  '了解 HaiwaiLab 海外实验室：我们的团队背景、测评准则、数据溯源规范以及商业合作隔离机制。坚持基于 5Gbps 高并发测试拓扑输出客观中立的实测数据，拒绝虚假排名与利益裹挟。';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: title,
+    description,
+    url: `${SITE.url}/about/`,
+    mainEntity: {
+      '@type': 'Organization',
+      name: SITE.name,
+      url: SITE.url,
+      description: '专注于海外网络代理、跨境外贸与主流大模型连接技术的专业评测团队。',
+      knowsAbout: ['IEPL 专线', 'IPLC 专线', '网络代理协议', '流媒体解锁', 'ChatGPT 原生网络配置'],
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首页', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: '关于我们', item: `${SITE.url}/about/` },
+    ],
+  },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <div class="container layout-single">
+    <div class="page-head">
+      <nav class="breadcrumb" aria-label="面包屑"><a href="/">首页</a> › 关于我们</nav>
+      <h1>关于 HaiwaiLab 海外实验室</h1>
+      <p class="tagline">基于真实数据 · 坚持客观独立 · 专注于跨境网络与 AI 基础设施测评</p>
+    </div>
+
+    <article class="prose">
+      <h2>我们是谁</h2>
+      <p>
+        <strong>HaiwaiLab（海外实验室）</strong>由多位拥有多年跨国企业网络运维、IDC 机房架构及前沿 AI 大模型应用经验的工程师共同维护。我们长期关注国际网络骨干链路波动、跨国专线（IEPL/IPLC）性能表现以及全球主流网络代理服务的质量变动。
+      </p>
+      <p>
+        在充满信息不对称与过度营销的机场代理行业中，很多用户常常被虚假的“千兆跑满”、“永久不跑路”等广告词误导。我们创立 HaiwaiLab 的初衷非常简单：<strong>用可重复检验的高并发实测切片和真实连通证据，还原各品牌服务的真实面貌，帮助跨境工作者、出海团队与技术爱好者高效选到合适、省心的网络工具。</strong>
+      </p>
+
+      <h2>我们的三大核心测评原则</h2>
+      <div class="card" style="margin: 20px 0; padding: 20px;">
+        <h3 style="margin-top: 0;">1. 证据驱动，拒绝编造</h3>
+        <p>
+          本站收录的实测数据（均速、延迟、峰值、丢包率）全部基于我们在国内电信、联通、移动多网络环境下定期运行的并发压测工具切片。对于未经本站独立实测的官方宣称参数，我们一律显式打上「品牌资料显示」或「数据待核实」标记，严禁以确定语气向读者做出虚假承诺。
+        </p>
+        <h3>2. 商业合作物理隔离，排名不受利益裹挟</h3>
+        <p>
+          为了保障全站评测的可持续运营，我们部分链接采用了第三方合作转介（Affiliate）。但我们确立了严格的技术铁律：所有商业转介必须经由站内跳板隔离；更重要的是，<strong>任何商业合作均不得购买或影响排行榜的核心排位与编辑评测结论</strong>。速度第一就是第一，短板存在就会如实写明。
+        </p>
+        <h3>3. 鼓励弹性消费，倡导避坑纪律</h3>
+        <p>
+          代理服务具有天然的波动性和政策不确定性。我们始终在全站所有文章中向用户倡导「先小额月付、满意后再续期」的避坑纪律，坚决反对盲目推荐超长年付或缺乏备用方案的孤注一掷。
+        </p>
+      </div>
+
+      <h2>评测标准与测试基础设施</h2>
+      <p>
+        我们搭建了包含 5Gbps 高并发节点测试台、多区原生 IP 流媒体自动探测探针以及长会话 AI 保持率监测系统。关于我们测试所用的宽带环境、MiaoKo 压测版本及指标定义，详见我们的专属标准说明：<a href="/methodology/">查看 HaiwaiLab 实测方法论与设备规范 »</a>。
+      </p>
+
+      <h2>免责声明与合规提醒</h2>
+      <p>
+        本站提供的所有网络测速、协议科普与客户端配置教程仅供计算机网络学术研究、技术交流及合法跨境商业活动参考。请广大读者在日常使用中严格遵守所在地区的法律法规，切勿利用网络代理技术从事任何危害国家安全、侵犯他人隐私或违反法律规定的活动。
+      </p>
+    </article>
+  </div>
+</BaseLayout>

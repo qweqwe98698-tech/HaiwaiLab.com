@@ -50,6 +50,8 @@ const CORE_URLS = [
   '/network/',
   '/guide/',
   '/guide/getting-started/',
+  '/about/',
+  '/methodology/',
 ];
 
 const SUSPICIOUS_PATTERNS = [

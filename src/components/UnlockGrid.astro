@@ -1,0 +1,170 @@
+---
+/**
+ * 机场流媒体 & AI 解锁状态矩阵组件
+ * 基于《机场品牌图表样式》规范设计，以结构化网格展示 ChatGPT, Claude, Gemini, Netflix, Disney+, YouTube, HBO Max, TikTok, Spotify 等解锁支持度。
+ */
+
+export interface UnlockItem {
+  name: string;
+  category: 'ai' | 'streaming';
+  status: 'yes' | 'partial' | 'no';
+  note: string;
+}
+
+interface Props {
+  brandName: string;
+  testTime?: string;
+  items?: UnlockItem[];
+}
+
+const { brandName, testTime = '2026年实测 / 官方核实', items } = Astro.props;
+
+const defaultItems: UnlockItem[] = items || [
+  { name: 'ChatGPT', category: 'ai', status: 'yes', note: '原生 IP 支持，GPT-4o 交互稳定' },
+  { name: 'Claude', category: 'ai', status: 'yes', note: 'Web 端与 API 支持良好，低风控' },
+  { name: 'Gemini', category: 'ai', status: 'partial', note: '视节点而定，需选择美/新/日节点' },
+  { name: 'Netflix', category: 'streaming', status: 'yes', note: '原生原创剧与非自制剧全区解锁' },
+  { name: 'Disney+', category: 'streaming', status: 'yes', note: '支持 4K HDR 杜比视界高码率' },
+  { name: 'YouTube', category: 'streaming', status: 'yes', note: '4K/8K 极速秒开无缓冲' },
+  { name: 'HBO Max', category: 'streaming', status: 'yes', note: '主流节点支持解锁观看' },
+  { name: 'TikTok', category: 'streaming', status: 'yes', note: '支持创作者后台与直播推流' },
+  { name: 'Spotify', category: 'streaming', status: 'yes', note: '全区账号正常听歌' },
+];
+
+const aiItems = defaultItems.filter(i => i.category === 'ai');
+const streamingItems = defaultItems.filter(i => i.category === 'streaming');
+---
+
+<div class="unlock-matrix-card card">
+  <div class="unlock-head">
+    <div class="unlock-title">
+      <span class="icon">🎬</span>
+      <strong>{brandName} 流媒体与 AI 解锁测试矩阵</strong>
+    </div>
+    <span class="unlock-badge">{testTime}</span>
+  </div>
+
+  <div class="unlock-group">
+    <div class="group-label">🤖 AI 工具与大模型解锁</div>
+    <div class="unlock-grid">
+      {aiItems.map((item) => (
+        <div class={`unlock-item status-${item.status}`}>
+          <div class="item-top">
+            <span class="status-icon">
+              {item.status === 'yes' ? '✅' : item.status === 'partial' ? '⚠️' : '❌'}
+            </span>
+            <span class="item-name">{item.name}</span>
+          </div>
+          <span class="item-note">{item.note}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="unlock-group" style="margin-top: 16px;">
+    <div class="group-label">📺 海外流媒体与影音解锁</div>
+    <div class="unlock-grid">
+      {streamingItems.map((item) => (
+        <div class={`unlock-item status-${item.status}`}>
+          <div class="item-top">
+            <span class="status-icon">
+              {item.status === 'yes' ? '✅' : item.status === 'partial' ? '⚠️' : '❌'}
+            </span>
+            <span class="item-name">{item.name}</span>
+          </div>
+          <span class="item-note">{item.note}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="unlock-footnote">
+    <span>💡 提示：流媒体与 AI 解锁受服务商机房 IP 轮换影响，若遇风控拦截可尝试在客户端切换同地区其他节点。</span>
+  </div>
+</div>
+
+<style>
+  .unlock-matrix-card {
+    padding: 20px 24px;
+    margin: 24px 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-card);
+  }
+  .unlock-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+  .unlock-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16.5px;
+    color: var(--text);
+  }
+  .unlock-badge {
+    font-size: 12px;
+    background: var(--bg-soft);
+    padding: 3px 10px;
+    border-radius: 999px;
+    color: var(--text-soft);
+    border: 1px solid var(--border);
+  }
+  .group-label {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-soft);
+    margin-bottom: 10px;
+  }
+  .unlock-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .unlock-item {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .unlock-item.status-yes {
+    border-color: rgba(16, 185, 129, 0.25);
+    background: rgba(16, 185, 129, 0.04);
+  }
+  .unlock-item.status-partial {
+    border-color: rgba(245, 158, 11, 0.25);
+    background: rgba(245, 158, 11, 0.04);
+  }
+  .unlock-item.status-no {
+    border-color: rgba(239, 68, 68, 0.25);
+    background: rgba(239, 68, 68, 0.04);
+  }
+  .item-top {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    font-size: 14.5px;
+  }
+  .item-note {
+    font-size: 12.5px;
+    color: var(--text-soft);
+    line-height: 1.4;
+  }
+  .unlock-footnote {
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+    font-size: 12px;
+    color: var(--text-soft);
+  }
+</style>

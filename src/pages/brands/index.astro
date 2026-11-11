@@ -13,9 +13,9 @@ import { SITE } from '../../data/site';
 
 const updated = '2026年8月';
 
-const title = '机场品牌库：16 家机场大全与导航（2026 持续更新）';
+const title = '机场品牌库：42 家机场大全与导航（2026 持续更新）';
 const description =
-  '2026 最新机场导航与品牌库：一页收录 16 家机场品牌的线路类型、协议支持、套餐价格、注册优惠码、AI 与流媒体解锁能力和真实测速数据，方便横向对比，快速选出适合你使用场景与预算的机场品牌。';
+  '2026 最新机场导航与品牌库：一页收录 42 家机场品牌的线路类型、协议支持、套餐价格、注册优惠码、AI 与流媒体解锁能力和真实测速数据，方便横向对比，快速选出适合你使用场景与预算的机场品牌。';
 
 const jsonLd = [
   {
@@ -50,9 +50,9 @@ const jsonLd = [
   <div class="container layout-single">
     <div class="page-head">
       <nav class="breadcrumb" aria-label="面包屑"><a href="/">首页</a> › 机场品牌库</nav>
-      <h1>机场品牌库：16 家机场大全与导航</h1>
+      <h1>机场品牌库：42 家机场大全与导航</h1>
       <p>
-        本页收录 HaiwaiLab 实测过的 16 家机场品牌（更新于 {updated}）。每个品牌均附真实测速图、线路与协议信息、
+        本页收录 HaiwaiLab 实测与深度收录的 42 家机场品牌（更新于 {updated}）。前列品牌附真实测速大图、各品牌均配齐线路与协议信息、
         当前优惠码和详细评测入口。不知道怎么选？先看
         <a href="/reviews/best/">机场推荐总榜</a>，或按需求进入
         <a href="/reviews/best/chatgpt/">ChatGPT 榜</a>、<a href="/reviews/best/streaming/">流媒体榜</a>、
@@ -91,17 +91,25 @@ const jsonLd = [
               <dd>{a.streaming}</dd>
             </dl>
             {a.coupon && <CouponBox coupon={a.coupon} note={a.couponNote} />}
-            <details class="bc-speed">
-              <summary>查看 {a.name} 真实测速图</summary>
-              <img
-                src={a.speedImage}
-                alt={a.speedImageAlt}
-                width={a.speedImageWidth}
-                height={a.speedImageHeight}
-                loading="lazy"
-                decoding="async"
-              />
-            </details>
+            {
+              a.hasRealSpeedtest !== false ? (
+                <details class="bc-speed">
+                  <summary>查看 {a.name} 真实测速图</summary>
+                  <img
+                    src={a.speedImage}
+                    alt={a.speedImageAlt}
+                    width={a.speedImageWidth}
+                    height={a.speedImageHeight}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </details>
+              ) : (
+                <div class="bc-speed-placeholder" style="font-size: 12.5px; color: var(--text-soft); padding: 8px 12px; background: var(--bg-soft); border-radius: 6px; margin: 10px 0;">
+                  <span>📊 独立 5Gbps 测速切片采集中，当前展示官方规格</span>
+                </div>
+              )
+            }
             <div class="bc-actions">
               <RegisterButton href={a.url} label="官网注册" />
               <a href={`/reviews/${a.id}/`}>完整评测 »</a>
